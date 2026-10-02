@@ -1,0 +1,24 @@
+{
+  "summary": "registry-facts is a zero-dependency Python CLI that turns the Sourcey open registry's current release into verifiable, paste-ready dated facts. company/readiness/search subcommands emit Reddit-shaped answers that always carry provenance: dataset URL, release digest, and retrieval date — e.g. 'Cloudflare 1.1.1.1 Public DNS holds grade A+ for agent onboarding (release 8094c042ec14; retrieved 2026-10-02)'. Live-verified 2026-10-02: all three Sourcey datasets (companies 543 records, startup-credits, agent-readiness 25 profiles) resolve to release sha256:8094c042ec143bbd5d47c59219c4f4abb189db6368c4a51f37a862963f9a4580; company devin, readiness cloudflare (2 profiles: Developer Platform C+, Public DNS A+), search 'AI', and releases subcommands all exercised successfully with table/reddit/json formats.",
+  "tool": "registry-facts",
+  "version": "1.0.0",
+  "author": "AmirDiaz",
+  "repo": "https://github.com/AmirDiaz/registry-facts",
+  "verified_at": "2026-10-02T20:10:00Z",
+  "data_sources": {
+    "companies": "https://sourcey.com/companies.json (543 companies)",
+    "credits": "https://sourcey.com/startup-credits.json",
+    "readiness": "https://sourcey.com/agent-readiness.json (25 profiles)",
+    "release_id": "sha256:8094c042ec143bbd5d47c59219c4f4abb189db6368c4a51f37a862963f9a4580"
+  },
+  "tests": [
+    {"name": "company devin table output", "passed": true, "command": "python3 registry_facts.py company devin"},
+    {"name": "readiness cloudflare reddit format (2 profiles)", "passed": true, "command": "python3 registry_facts.py readiness cloudflare --format reddit"},
+    {"name": "search 'AI' across datasets limit 2", "passed": true, "command": "python3 registry_facts.py search AI --format reddit --limit 2"},
+    {"name": "releases prints per-dataset digests", "passed": true, "command": "python3 registry_facts.py releases"},
+    {"name": "empty-summary company renders clean sentence", "passed": true, "command": "python3 registry_facts.py search ActiveCampaign --format reddit"}
+  ],
+  "dependencies": ["python3 (>=3.8) stdlib only"],
+  "lines_of_code": 210,
+  "api_surface": ["GET /companies.json", "GET /startup-credits.json", "GET /agent-readiness.json"]
+}
